@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:mysql@localhost:3306/db"
+}
+
+model post {
+  id             Int    @id @unique(map: "Post_id_key") @default(autoincrement())
+  name           String @db.VarChar(20)
+  number_of_book Int
+  pdf            Bytes?
+  writer         String @db.Text
+  nashername     String @db.VarChar(150)
+  chap           String @db.VarChar(150)
+  many           Int
+  shabk          String @db.VarChar(20)
+  subject        String @db.VarChar(500)
+}
+
+model lesson {
+  id          Int     @id
+  name        String  @db.VarChar(20)
+  value       String  @default("0") @db.VarChar(1)
+  about       String  @default("توضیح خاصی ندارد.") @db.VarChar(500)
+  book        String? @db.VarChar(50)
+  pishniaz_id Int?
+}
+
+model user {
+  name           String
+  role           user_role @default(USER)
+  email          String    @unique(map: "User_email_key")
+  hashedPassword String
+  id             Int       @id @unique(map: "User_id_key") @default(autoincrement())
+  family         String
+  education      String    @default("دیپلم") @db.VarChar(25)
+  expertise      String    @db.VarChar(100)
+  phon           String    @db.VarChar(15)
+}
+
+model user_image {
+  id    Int    @id @default(autoincrement())
+  email String @unique(map: "User_image_key")
+  image Bytes?
+}
+
+model lesson_group {
+  id           Int    @unique(map: "id") @default(autoincrement())
+  group_id     String @id @db.VarChar(20)
+  teacher_id   String @db.VarChar(20)
+  lesson_id    String @db.VarChar(20)
+  number_group String @db.VarChar(15)
+}
+
+enum user_role {
+  USER
+  ADMIN
+  TEACHER
+}
